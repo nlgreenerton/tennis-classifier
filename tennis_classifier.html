@@ -2,7 +2,7 @@
 <html>
 <head><meta charset="utf-8" />
 
-<title>Untitled</title>
+<title>Tennis classifier</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
@@ -13105,7 +13105,6 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">import</span> <span class="nn">psycopg2</span> <span class="k">as</span> <span class="nn">pg</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">pandas.io.sql</span> <span class="k">as</span> <span class="nn">pd_sql</span>
 <span class="kn">from</span> <span class="nn">sqlalchemy</span> <span class="kn">import</span> <span class="n">create_engine</span>
 <span class="kn">import</span> <span class="nn">re</span>
@@ -14243,18 +14242,6 @@ Name: gs_player_hand, dtype: int64</pre>
     <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">87</span><span class="p">)</span>
     <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span><span class="n">hue</span><span class="o">=</span><span class="n">y_col</span><span class="p">,</span> <span class="n">plot_kws</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">))</span>
 
-
-<span class="k">def</span> <span class="nf">make_confusion_matrix</span><span class="p">(</span><span class="n">model</span><span class="p">,</span><span class="n">x_data</span><span class="p">,</span><span class="n">y_data</span><span class="p">,</span><span class="n">threshold</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Predict class 1 if probability of being in class 1 is greater than threshold. (model.predict(X_test) does this automatically with a threshold of 0.5)&quot;&quot;&quot;</span>
-    <span class="n">y_predict</span> <span class="o">=</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict_proba</span><span class="p">(</span><span class="n">x_data</span><span class="p">)[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">threshold</span><span class="p">)</span>
-    <span class="n">model_confusion</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_data</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">dpi</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mf">6.4</span><span class="p">,</span><span class="mf">4.8</span><span class="p">])</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
-    <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">model_confusion</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">YlGnBu</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">square</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span>
-           <span class="n">xticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">],</span>
-           <span class="n">yticklabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;0&#39;</span><span class="p">,</span> <span class="s1">&#39;1&#39;</span><span class="p">]);</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;prediction&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;actual&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>
@@ -14614,7 +14601,7 @@ Name: gs_player_hand, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since only 16 of the 128 players will make the round of 16 (R16), it doesn't make sense to be setting a threshold cutoff to above which the estimator predicts True and below, False. Instead, I'm going to use the estimator to calculate the probability of each player qualifying for R16 and take the top 16 as the predicted qualifiers. In theory, this means the number of false positivies would equal the number of false negatives. However, there could be multiple players with the same odds, especially for a tree-based estimator, so some may predict more than 16 players qualifying for R16 and thus precision, recall, and f1 wouldn't be equal. Rather than collate precision, recall, and f1, I'm just calculating precision and recall and then picking the minimum between the two. That way, if I am predicting more than 16 players making the R16, I am not artificially inflating the scoring metric.</p>
+<p>Since only 16 of the 128 players will make the round of 16 (R16), it doesn't make sense to be setting a threshold cutoff above which the estimator predicts True and below, False. Instead, I'm going to use the estimator to calculate the probability of each player qualifying for R16 and take the top 16 as the predicted qualifiers. In theory, this means the number of false positivies would equal the number of false negatives. However, there could be multiple players with the same odds, especially for a tree-based estimator, so some may predict more than 16 players qualifying for R16 and thus precision, recall, and f1 wouldn't be equal. Rather than collate precision, recall, and f1, I'm just calculating precision and recall and then picking the minimum between the two. That way, if I am predicting more than 16 players making the R16, I am not artificially inflating the scoring metric.</p>
 
 </div>
 </div>
@@ -14886,7 +14873,7 @@ Name: gs_player_hand, dtype: int64</pre>
 <div class="cell border-box-sizing text_cell rendered"><div class="prompt input_prompt">
 </div><div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="reduce-features-with-BorutaPy">reduce features with BorutaPy<a class="anchor-link" href="#reduce-features-with-BorutaPy">&#182;</a></h4><p>I originally used all 26 features but looking at the feature<em>importances</em> or coef_ attributes in some of the  estimators, I could see that there were unused features. Knowing also that the seeding for tournaments alone, which itself is reliant on the ranking points, is designed to find those qualifying to the R16, it would seem that I could improve the results using fewer features. Using all features may increase the variance in the resulting model, so I used the Boruta feature selection method described <a href="https://danielhomola.com/feature%20selection/phd/borutapy-an-all-relevant-feature-selection-method/">here</a>.</p>
+<h4 id="reduce-features-with-BorutaPy">reduce features with BorutaPy<a class="anchor-link" href="#reduce-features-with-BorutaPy">&#182;</a></h4><p>I originally used all 26 features but looking at the feature_importances_ or coef_attributes in some of the estimators, I could see that there were unused features. Knowing also that the seeding for tournaments alone, which itself is reliant on the ranking points, is designed to find those qualifying to the R16, it would seem that I could improve the results using fewer features. Using all features may increase the variance in the resulting model, so I used the Boruta feature selection method described <a href="https://danielhomola.com/feature%20selection/phd/borutapy-an-all-relevant-feature-selection-method/">here</a>.</p>
 
 </div>
 </div>
